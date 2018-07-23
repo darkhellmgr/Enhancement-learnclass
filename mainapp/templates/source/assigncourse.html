@@ -1,0 +1,39 @@
+{% extends 'adminbase.html' %}
+
+
+{% block content %}
+
+<div class="container-fluid">
+<div class="row">
+    <div class="col-md-8">
+<div class="card" style="width: 100%;">
+    <div class="card-body">
+    <form method="post" action="{% url 'assign' %}">
+          {%csrf_token%}
+            <!--<div class="card" style="width: 100%;">-->
+                <div class="card-header">
+                    Assign courses to Teacher
+                </div>
+
+                <label>Teacher</label>
+                <select name='teacher'  class="form-control">
+                      {%for tid,tname in teacher_list%}
+                        <option value="{{tid}}">{{tname}}</option>
+                        {%endfor%}
+                 </select>
+
+                    <label>Courses</label>
+                    <select name='course'  class="form-control">
+                      {%for cid,cname in course_list%}
+                        <option value="{{cid}}">{{cname}}</option>
+                        {%endfor%}
+                    </select><br>
+        <button type="submit" class="btn btn-success ">Save</button>
+    </form>
+    </div>
+</div>
+
+            </div>
+        </div>
+</div>
+{% endblock %}

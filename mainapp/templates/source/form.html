@@ -1,0 +1,134 @@
+{%extends 'adminbase.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+{% include 'message.html' %}
+<div class="container-fluid">
+<div class="row">
+    {% if not editid %}
+    <div class="col-md-6">
+    <div class="card">
+        <div class="card-header">
+            {{formtype}}
+        </div>
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                {% if user_list %}
+                {% for id, name in user_list %}
+                {% if formtype == 'Teacher' or formtype == 'Student' or formtype == 'Parent' %}
+                <li class="list-group-item">{{name}}
+                    <a href="/mainapp/userform/{{formtype}}/{{id}}/">
+                        <button class="btn btn-primary btn-sm" style="float:right;">View Details</button>
+                    </a>
+                </li>
+                {% else %}
+                <li class="list-group-item">{{name}}
+                    <a href="/mainapp/allform/{{formtype}}/{{id}}/">
+                    <button class="btn btn-outline-primary btn-sm" style="float:right;">View Details</button></a></li>
+                {% endif %}
+                {% endfor %}
+
+                {% else %}
+                {% for id, name in course_list %}
+                <li class="list-group-item">{{name}}
+                    <a href="/mainapp/allform/{{formtype}}/{{id}}/">
+                        <button class="btn btn-primary btn-sm" style="float:right;">View Details</button>
+                    </a>
+                </li>
+                {% endfor %}
+                {% endif%}
+
+            </ul>
+
+        </div>
+    </div>
+    </div>
+    {% endif %}
+
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                {% if not editid %}
+                <button class="btn btn-outline-success btn-block " id="addform"> Add {{formtype}} </button>
+                {% else %}
+            <button class="btn btn-outline-success btn-block  " id="addform"> Edit {{formtype}} </button>
+            {% endif %}
+            </div>
+        <!--<div class="card-body">-->
+    <div id="formcontainer" class="container">
+              <form action="" method="post">
+            {% csrf_token %}
+                  {% if formtype == 'Student' or formtype == 'Courses'%}
+                  <br>
+                  <label>Grade</label>
+
+                 <select name='grade' id="selectgrade" class="form-control">
+                      {%for gid,gname in grade%}
+                    <option value="{{gid}}" >{{gname}}</option>
+                    {%endfor%}
+                 </select>
+
+                  {% elif formtype == 'Teacher'%}
+
+                  <label>Assign Course</label>
+
+                    <select name='course'  class="form-control">
+                      {%for cid,cname in course_list%}
+                        <option value="{{cid}}">{{cname}}</option>
+                        {%endfor%}
+                    </select><br>
+                  {%endif%}
+
+            {{form|crispy}}
+            <button type="submit" class="btn btn-success" >Save</button>
+        </form>
+    </div>
+      </div>
+    </div>
+    </div>
+</div>
+</div>
+
+<script>
+    var gradeid = '{{gradeid}}';
+    $("#selectgrade").val(gradeid)
+</script>
+
+<script>
+
+$( document ).ready(function() {
+var id = '{{editid}}';
+console.log(id);
+if(id=='None'){
+$('#formcontainer').hide();
+}
+$('#addform').on('click', function()
+{
+    $('#formcontainer').toggle();
+
+});
+});
+</script>
+
+
+<!--<script >-->
+
+<!--$( document ).ready(function() {-->
+<!--var i=1;-->
+<!--$('#add_option').on('click', function()-->
+<!--{-->
+
+<!--ap=$(this).parent();-->
+   <!--x=ap.find('#optionrow:first').clone(true,true);-->
+   <!--optionname='option'+ ++i;-->
+   <!--x.find('input:first').attr('name',optionname);-->
+   <!--x.find('input:last').attr('value',optionname);-->
+   <!--x.find('#remove').attr('disabled',false);-->
+   <!--console.log(x);-->
+   <!--ap.find('#options').append(x);-->
+   <!--return false;-->
+
+<!--});-->
+<!--</script>-->
+{% endblock %}
+

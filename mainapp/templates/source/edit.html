@@ -1,0 +1,21 @@
+{% extends myhtml %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+{% include 'message.html' %}
+<div class="row">
+   <div class="col-md-8">
+       <form typeof="submit" method="post" action="">
+           {% csrf_token %}
+           {{form|crispy}}
+           <button type="submit" class="btn btn-success">Submit</button>
+
+       </form>
+       <a href="{% url 'change' %}"> <button type="submit" class="btn btn-warning">Change Password</button></a>
+
+   </div>
+</div>
+
+    <!--for viewing question-->
+
+{% endblock %}

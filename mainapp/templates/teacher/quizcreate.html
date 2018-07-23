@@ -1,0 +1,79 @@
+{% extends 'teacherbase.html' %}
+{% block content %}
+    <script src="https://cdn.jsdelivr.net/npm/gijgo@1.9.6/js/gijgo.min.js" type="text/javascript"></script>
+    <link href="https://cdn.jsdelivr.net/npm/gijgo@1.9.6/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+<div class="container-fluid">
+
+  <div class="main">
+       <div class="content mt-3">
+           <nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Quiz</li>
+  </ol>
+</nav>
+
+<div class="row">
+<div class="col-md-8">
+
+    <form method="post" action="{% url 'quizcreate'%}">
+    {%csrf_token%}
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="inputEmail4">Quiz-name</label>
+      <input type="text" name="title" class="form-control" id="inputEmail4" placeholder="Type Quiz Name Here" required>
+    </div>
+    <div class="form-group col-md-6">
+                <label>Course</label>
+      <select name='course'  class="form-control">
+           {%for cid,cname in courses%}
+  <option value="{{cid}}">{{cname}}</option>
+        {%endfor%}
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+          <label>Topic</label>
+      <select name='topic'  class="form-control">
+           {%for tid,tname in topics%}
+  <option value="{{tid}}">{{tname}}</option>
+        {%endfor%}
+      </select>
+  </div>
+        <label>Type</label>
+      <select name='type' id="inputState" class="form-control">
+        <option>Training</option>
+        <option>Exam</option>
+      </select>
+        <br>
+            <div id="datecontainer"><input name="deadline" id="datepicker"  placeholder="Set the deadline here" align="right">
+            </div>
+
+<br>
+  <button type="submit" class="btn btn-primary">Save and add questions</button>
+
+
+    </form>
+</div>
+
+</div>
+       </div>
+  </div>
+    <script>
+         $('#datecontainer').hide();
+        $('#datepicker').datetimepicker({
+            uiLibrary: 'bootstrap4'
+        });
+        $('#inputState').change(function(){
+        var type=($('#inputState').find(":selected").text());
+        console.log(type);
+        if($('#inputState option:selected').text()=="Exam"){
+        $('#datecontainer').show();
+        }
+        else
+        {
+        $('#datecontainer').hide();
+
+        }
+        });
+    </script>
+{% endblock %}
